@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fernanda Coelho | AI Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rust:#C84E2F;--teal:#1E3A44;--black:#1A1A1A;
+  --blush:#E7D5CF;--cream:#F6F3EE;--white:#fff;
+  --muted:#888;--border:#E2DDD7;
+  --ft:'Cormorant Garamond',serif;
+  --fb:'Inter',sans-serif;
+}
+body{background:var(--cream);font-family:var(--fb);color:var(--black);min-height:100vh}
+.page{max-width:480px;margin:0 auto;padding:44px 22px 80px;display:flex;flex-direction:column;align-items:center}
+
+/* logo */
+.logo{font-family:var(--ft);font-size:26px;color:var(--rust);letter-spacing:2px;margin-bottom:26px;align-self:flex-start;line-height:1}
+.logo span{font-size:10px;font-family:var(--fb);font-weight:300;color:var(--black);letter-spacing:3px;text-transform:uppercase;display:block;margin-top:2px}
+
+/* avatar */
+.avatar-wrap{width:104px;height:104px;border-radius:50%;overflow:hidden;border:2.5px solid var(--rust);margin-bottom:14px}
+.avatar-ph{width:100%;height:100%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--ft);font-size:34px;color:var(--blush)}
+
+/* identity */
+.handle{font-size:12px;color:var(--rust);letter-spacing:1px;margin-bottom:5px}
+.name{font-family:var(--ft);font-size:24px;font-weight:600;text-align:center;margin-bottom:5px;line-height:1.2}
+.tagline{font-size:10px;font-weight:300;color:var(--teal);text-align:center;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:4px}
+.bio{font-size:12px;font-weight:300;color:#555;text-align:center;line-height:1.7;margin-bottom:18px;max-width:300px}
+.divider{width:36px;height:1.5px;background:var(--rust);margin:0 auto 22px}
+
+/* socials */
+.socials{display:flex;gap:14px;margin-bottom:34px}
+.socials a{width:36px;height:36px;border:1px solid var(--rust);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--rust);transition:background .2s,color .2s}
+.socials a:hover{background:var(--rust);color:var(--white)}
+.socials svg{width:15px;height:15px;fill:currentColor}
+
+/* section label */
+.slabel{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--rust);margin-bottom:12px;align-self:flex-start;width:100%}
+
+/* link btn */
+.lbtn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:13px 18px;margin-bottom:9px;background:var(--white);border:1px solid var(--border);border-radius:3px;text-decoration:none;color:var(--black);font-size:12px;font-weight:400;letter-spacing:.4px;cursor:pointer;transition:border-color .2s,background .2s}
+.lbtn:hover{border-color:var(--rust);background:#fdf9f7}
+.lbtn-icon{width:26px;height:26px;background:var(--cream);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lbtn-icon svg{width:13px;height:13px;fill:var(--rust)}
+.lbtn-label{flex:1;text-align:left;margin-left:11px}
+.lbtn-arr{color:#ccc;font-size:15px}
+
+.sp{height:28px;width:100%}
+
+/* ── PROMPTS ── */
+/* filter bar */
+.filter-bar{width:100%;display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:18px;scrollbar-width:none}
+.filter-bar::-webkit-scrollbar{display:none}
+.ftag{flex-shrink:0;padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:11px;font-weight:400;color:var(--muted);background:var(--white);cursor:pointer;transition:all .18s;letter-spacing:.3px}
+.ftag:hover{border-color:var(--rust);color:var(--rust)}
+.ftag.active{background:var(--rust);border-color:var(--rust);color:var(--white)}
+
+/* carousel wrapper */
+.carousel-outer{width:100%;overflow:hidden;position:relative}
+.carousel-track{display:flex;gap:12px;transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform}
+
+/* prompt card */
+.pcard{flex:0 0 200px;background:var(--white);border:1px solid var(--border);border-radius:4px;padding:16px 14px 14px;cursor:pointer;transition:border-color .2s,box-shadow .2s;display:flex;flex-direction:column;gap:10px}
+.pcard:hover{border-color:var(--rust);box-shadow:0 2px 12px rgba(200,78,47,.08)}
+.pcard-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--rust);background:#f9ebe6;padding:3px 8px;border-radius:2px;align-self:flex-start}
+.pcard-title{font-size:12px;font-weight:500;color:var(--black);line-height:1.4}
+.pcard-desc{font-size:11px;font-weight:300;color:var(--muted);line-height:1.5;flex:1}
+.pcard-cta{font-size:10px;color:var(--rust);letter-spacing:.5px;display:flex;align-items:center;gap:4px;margin-top:2px}
+
+/* carousel nav dots */
+.car-dots{display:flex;gap:6px;justify-content:center;margin-top:14px}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s,transform .2s}
+.cdot.active{background:var(--rust);transform:scale(1.3)}
+
+/* ── MODAL ── */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(26,26,26,.55);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-ov.open{display:flex}
+.modal{background:var(--white);border-radius:4px;width:100%;max-width:450px;padding:26px 22px 22px;position:relative;max-height:82vh;overflow-y:auto}
+.modal-hint{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--rust);margin-bottom:10px}
+.modal-title{font-family:var(--ft);font-size:20px;font-weight:600;color:var(--black);margin-bottom:14px;line-height:1.3}
+.modal-instruct{font-size:11px;color:#777;background:var(--cream);border-left:2px solid var(--rust);padding:8px 12px;margin-bottom:14px;line-height:1.6}
+.modal-text{font-size:11.5px;line-height:1.85;color:#444;background:#f9f9f9;border:1px solid #eee;border-radius:3px;padding:14px;margin-bottom:14px;white-space:pre-wrap;word-break:break-word}
+.modal-actions{display:flex;gap:8px}
+.btn-copy{flex:1;padding:11px;background:var(--rust);color:var(--white);border:none;border-radius:3px;font-size:11px;font-family:var(--fb);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.btn-copy:hover{background:#b03d22}
+.btn-copy.copied{background:var(--teal)}
+.btn-close{padding:11px 14px;background:transparent;color:#999;border:1px solid var(--border);border-radius:3px;font-size:11px;font-family:var(--fb);cursor:pointer;transition:border-color .2s}
+.btn-close:hover{border-color:#999;color:var(--black)}
+.close-x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:18px;color:#bbb;cursor:pointer;line-height:1}
+.close-x:hover{color:var(--black)}
+
+/* footer */
+.footer{margin-top:48px;text-align:center}
+.footer-brand{font-family:var(--ft);font-size:13px;color:var(--rust);letter-spacing:2px;margin-bottom:3px}
+.footer-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#bbb}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="logo">F.<span>Fernanda Coelho</span></div>
+
+  <div class="avatar-wrap"><img src="https://i.imgur.com/HzXQO4M.jpg" alt="Fernanda Coelho" onerror="this.parentElement.innerHTML='<div class=\'avatar-ph\'>FC</div>'"></div>
+  <p class="handle">@fedreilich</p>
+  <h1 class="name">Fernanda Coelho</h1>
+  <p class="tagline">Estratégia · Cultura · Pessoas</p>
+  <p class="bio">Curiosa e apaixonada por inovação.<br>IA aplicada. Negócios reais. Impacto de verdade.</p>
+  <div class="divider"></div>
+
+  <div class="socials">
+    <a href="http://wa.me/5521998669695" title="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/fedreilich/" title="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/fernanda-c-dreilich/" title="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="mailto:fernandadreilich@gmail.com" title="Email">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+
+  <!-- Conteúdos -->
+  <p class="slabel">Conteúdos</p>
+  <a class="lbtn" href="https://open.spotify.com/show/2VlRSpZreFy7vw1KAzLql2">
+    <div class="lbtn-icon"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></div>
+    <span class="lbtn-label">Notícia semanal de IA — Podcast</span>
+    <span class="lbtn-arr">›</span>
+  </a>
+
+  <div class="sp"></div>
+
+  <!-- Downloads -->
+  <p class="slabel">Downloads</p>
+  <a class="lbtn" href="https://ugc.production.linktr.ee/471ca6de-dfbc-4c94-91fd-3f64140a02de_AI-SOLUTION-CANVAS.pdf" target="_blank">
+    <div class="lbtn-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-3-7H9v-2h6v2zm2 4H9v-2h8v2z"/></svg></div>
+    <span class="lbtn-label">AI Solution Canvas</span>
+    <span class="lbtn-arr">›</span>
+  </a>
+  <a class="lbtn" href="https://ugc.production.linktr.ee/610b8e0c-1dbe-4d16-b5a4-8a998d3045c8_AI-Solution-Canvas-Manual--PT-BR-.pdf" target="_blank">
+    <div class="lbtn-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-3-7H9v-2h6v2zm2 4H9v-2h8v2z"/></svg></div>
+    <span class="lbtn-label">AI Solution Canvas Manual (PT-BR)</span>
+    <span class="lbtn-arr">›</span>
+  </a>
+
+  <div class="sp"></div>
+
+  <!-- ✦ PROMPTS LEGAIS -->
+  <p class="slabel">✦ Prompts Legais</p>
+
+  <!-- Filter tabs -->
+  <div class="filter-bar" id="filterBar">
+    <button class="ftag active" data-cat="todos">Todos</button>
+    <button class="ftag" data-cat="produtividade">Produtividade</button>
+    <button class="ftag" data-cat="comunicacao">Comunicação</button>
+    <button class="ftag" data-cat="ia">IA na prática</button>
+    <button class="ftag" data-cat="linkedin">LinkedIn</button>
+    <button class="ftag" data-cat="aprendizado">Aprendizado</button>
+    <button class="ftag" data-cat="imagem">Gerar imagens</button>
+  </div>
+
+  <!-- Carousel -->
+  <div class="carousel-outer" id="carOuter">
+    <div class="carousel-track" id="carTrack"></div>
+  </div>
+  <div class="car-dots" id="carDots"></div>
+
+  <div class="sp"></div>
+
+  <!-- Contatos -->
+  <p class="slabel">Contatos</p>
+  <a class="lbtn" href="mailto:fernandadreilich@gmail.com">
+    <div class="lbtn-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+    <span class="lbtn-label">Email</span><span class="lbtn-arr">›</span>
+  </a>
+  <a class="lbtn" href="https://wa.me/5521998669695">
+    <div class="lbtn-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></div>
+    <span class="lbtn-label">WhatsApp</span><span class="lbtn-arr">›</span>
+  </a>
+  <a class="lbtn" href="https://www.linkedin.com/in/fernanda-c-dreilich/">
+    <div class="lbtn-icon"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+    <span class="lbtn-label">LinkedIn</span><span class="lbtn-arr">›</span>
+  </a>
+
+  <div class="footer">
+    <p class="footer-brand">Fernanda Coelho AI Media</p>
+    <p class="footer-sub">IA aplicada · Negócios reais · Impacto de verdade</p>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-ov" id="modal" onclick="closeOv(event)">
+  <div class="modal">
+    <button class="close-x" onclick="closeModal()">×</button>
+    <p class="modal-hint">Prompts Legais — fedreilich</p>
+    <h2 class="modal-title" id="mTitle"></h2>
+    <div class="modal-instruct">Copie e cole no ChatGPT, Claude, Gemini ou na sua IA de preferência ✦</div>
+    <div class="modal-text" id="mText"></div>
+    <div class="modal-actions">
+      <button class="btn-copy" id="btnCopy" onclick="copyP()">Copiar prompt</button>
+      <button class="btn-close" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const allPrompts = [
+  {cat:'produtividade', tag:'Produtividade', title:'Segundo cérebro pessoal', desc:'Organize ideias soltas em um sistema de conhecimento',
+   text:`Você é meu assistente de organização de conhecimento. Vou te passar uma série de ideias, anotações e reflexões soltas. Sua tarefa é:
+
+1. Identificar os temas centrais
+2. Agrupar as ideias por categoria
+3. Sugerir conexões que eu talvez não tenha percebido
+4. Criar um mapa de conhecimento no formato:
+   → Tema principal
+      • Sub-ideia 1
+      • Sub-ideia 2
+
+Seja conciso e preserve meu estilo de pensamento. Quando terminar, pergunte se quero aprofundar algum dos temas.
+
+Aqui estão minhas notas: [COLE SUAS ANOTAÇÕES AQUI]`},
+
+  {cat:'comunicacao', tag:'Comunicação', title:'Mensagem difícil sem drama', desc:'Feedbacks e recados delicados com clareza e empatia',
+   text:`Preciso escrever uma mensagem [de feedback / para recusar / para corrigir algo] para [descreva a pessoa e o contexto].
+
+O que aconteceu: [descreva a situação]
+
+O que quero comunicar: [o que precisa ser dito]
+
+O tom que preciso: honesto, direto e empático — sem ser agressivo nem suavizar demais a ponto de perder o recado.
+
+Escreva 2 versões:
+• Versão curta (mensagem de texto / WhatsApp)
+• Versão mais elaborada (email ou conversa)
+
+Para cada versão, explique em uma linha o efeito que ela gera.`},
+
+  {cat:'ia', tag:'IA na prática', title:'Diagnóstico de processo com IA', desc:'Descubra onde a IA pode entrar no seu fluxo hoje',
+   text:`Vou te descrever uma rotina de trabalho. Quero que você atue como consultora especialista em IA aplicada a processos.
+
+Analise e me responda:
+1. Quais etapas têm maior potencial de automação ou aceleração com IA?
+2. Que ferramentas específicas você recomendaria para cada etapa?
+3. Onde a presença humana é insubstituível e por quê?
+4. Qual seria o primeiro passo prático para começar essa transformação?
+
+Seja objetiva. Prefira exemplos concretos a respostas genéricas.
+
+Minha rotina: [DESCREVA AQUI O SEU PROCESSO OU DIA A DIA]`},
+
+  {cat:'linkedin', tag:'LinkedIn', title:'Post que gera conversa', desc:'Estrutura para posts de valor sem parecer genérico',
+   text:`Crie um post para o LinkedIn com a seguinte estrutura:
+
+Tema: [DESCREVA O TEMA OU APRENDIZADO]
+Meu ponto de vista: [O QUE VOCÊ PENSA SOBRE ISSO]
+Público: [PARA QUEM É ESSE POST]
+
+Estrutura que quero:
+• Linha de abertura que para o scroll (sem clichê de "A maioria das pessoas...")
+• 3 a 4 parágrafos curtos com o desenvolvimento
+• Uma pergunta genuína no final para gerar comentários
+• Tom: direto, humano, sem jargão corporativo
+
+Escreva em primeira pessoa. Evite listas com bullet points. Máximo 1.200 caracteres.`},
+
+  {cat:'aprendizado', tag:'Aprendizado', title:'Aprenda qualquer coisa em 20 min', desc:'Use a IA como tutora para acelerar seu aprendizado',
+   text:`Você é uma tutora especialista em aprendizado acelerado. Quero aprender sobre [TEMA] em 20 minutos.
+
+Meu nível atual: [iniciante / intermediário / avançado]
+
+Me ensine seguindo essa estrutura:
+1. O conceito central em 3 frases simples
+2. Por que isso importa (aplicação prática real)
+3. Os 3 erros mais comuns de quem está aprendendo
+4. Um exemplo concreto que eu possa visualizar
+5. Uma pergunta que me faça pensar mais fundo no tema
+6. O próximo passo lógico para continuar aprendendo
+
+Seja direto. Evite introduções longas. Comece pelo conceito.`},
+
+  {cat:'imagem', tag:'Gerar imagens', title:'Análise de visagismo e colorimetria', desc:'Infográfico premium de cores e cortes ideais para o seu rosto',
+   text:`Crie uma análise visual completa de visagismo e colorimetria capilar a partir da foto enviada, transformando o resultado em um infográfico editorial premium.
+
+IMPORTANTE:
+• Use a foto como BASE REAL da análise
+• Preserve completamente o rosto original
+• NÃO embelezar artificialmente
+• As alterações devem acontecer APENAS no cabelo
+
+ESTRUTURA:
+
+TOPO — 5 versões da pessoa com cores diferentes:
+• Castanho Chocolate
+• Castanho Avelã
+• Morena Iluminada
+• Mel Escuro Dourado
+• Loiro Platinado
+
+Cada versão: foto realista + nome da cor + descrição estratégica da harmonia visual.
+
+MEIO — Bloco de recomendações:
+✔ Tons recomendados e por quê
+✘ Tons a evitar e por quê
+
+INFERIOR — 5 versões com cortes diferentes:
+• Longo em camadas
+• Long bob desfiado
+• Shaggy hair ondulado
+• Camadas com franja cortina
+• Repicado natural com movimento
+
+Cada versão: nome do corte + explicação de visagismo.
+
+FINAL — Bloco de visagismo:
+• Formato do rosto identificado
+• Objetivo visual do corte ideal
+• Recomendações estratégicas
+
+Estilo visual: fundo creme/off-white, detalhes em terracota e dourado, tipografia elegante, formato vertical 4:5.`},
+
+  {cat:'imagem', tag:'Gerar imagens', title:'Cena em arquibancada ao vivo', desc:'Você capturada pela câmera da transmissão esportiva',
+   text:`Use a foto enviada como base principal do rosto e identidade da pessoa. Mantenha o rosto EXATAMENTE como na foto original, sem embelezamento artificial.
+
+Crie uma cena ultra realista de transmissão esportiva ao vivo, como uma câmera de TV capturando aleatoriamente alguém na arquibancada durante um jogo da Seleção Brasileira.
+
+A pessoa deve estar sentada naturalmente na torcida, usando uniforme oficial do Brasil (amarelo ou azul).
+
+Estilo visual:
+• Captura espontânea de transmissão ao vivo
+• Estética SPORTV / transmissão FIFA
+• Qualidade de câmera de TV esportiva 4K
+• Leve borrão de movimento natural
+• Iluminação realista de estádio
+• Sem pose, sem contato visual com a câmera
+• Expressão natural e distraída assistindo ao jogo
+
+Ambiente:
+• Arquibancada lotada, pessoas ao redor com roupas do Brasil
+• Copos, bandeiras, objetos naturais de estádio
+• Placar de transmissão no topo
+• Sensação de frame capturado ao vivo
+
+NÃO suavizar a pele. NÃO deixar cinematográfico. NÃO transformar em influencer. A prioridade máxima é parecer uma pessoa REAL capturada pela câmera da transmissão.`},
+
+  {cat:'imagem', tag:'Gerar imagens', title:'Pôster editorial personalizado', desc:'Caricatura sofisticada com a sua essência e identidade',
+   text:`Crie um pôster/caricatura editorial premium totalmente personalizado sobre mim usando minha foto + tudo o que você sabe sobre mim nas conversas anteriores.
+
+Use o contexto das nossas conversas para buscar referências reais da minha personalidade, profissão, rotina, sonhos, valores, maternidade, hobbies, estética, desafios e estilo de vida.
+
+Estilo: ilustração digital hiper detalhada + caricatura sofisticada, visual entre editorial de revista, sketchbook criativo e mural de inspirações.
+
+Fundo clean com rabiscos, lettering, colagens e pinceladas em tons quentes (laranja, bege, dourado, marrom e off-white).
+
+Formato vertical 4:5 ou 9:16.
+
+Me represente no centro como protagonista forte, criativa, inteligente e carismática. Ao redor, crie microcenas com elementos da minha carreira, propósito, família, rotina real, sonhos, autocuidado, livros, tecnologia, criatividade e frases curtas simbólicas.
+
+A arte deve parecer um manifesto visual da minha identidade, cheia de detalhes escondidos e referências pessoais únicas.`},
+];
+
+let filtered = [...allPrompts];
+let curIdx = 0;
+let curPromptText = '';
+const CARD_W = 200;
+const GAP = 12;
+
+function buildCarousel() {
+  const track = document.getElementById('carTrack');
+  const dots = document.getElementById('carDots');
+  track.innerHTML = '';
+  dots.innerHTML = '';
+  curIdx = 0;
+
+  filtered.forEach((p, i) => {
+    const card = document.createElement('button');
+    card.className = 'pcard';
+    card.innerHTML = `<span class="pcard-tag">${p.tag}</span>
+      <p class="pcard-title">${p.title}</p>
+      <p class="pcard-desc">${p.desc}</p>
+      <span class="pcard-cta">Ver prompt ›</span>`;
+    card.addEventListener('click', () => openPrompt(i));
+    track.appendChild(card);
+
+    const dot = document.createElement('div');
+    dot.className = 'cdot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    dots.appendChild(dot);
+  });
+
+  goTo(0);
+}
+
+function goTo(idx) {
+  if (idx < 0) idx = 0;
+  if (idx >= filtered.length) idx = filtered.length - 1;
+  curIdx = idx;
+  const offset = idx * (CARD_W + GAP);
+  document.getElementById('carTrack').style.transform = `translateX(-${offset}px)`;
+  document.querySelectorAll('.cdot').forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+// swipe
+let touchStartX = 0;
+document.getElementById('carOuter').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+document.getElementById('carOuter').addEventListener('touchend', e => {
+  const dx = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 40) goTo(curIdx + (dx > 0 ? 1 : -1));
+});
+
+// filters
+document.getElementById('filterBar').addEventListener('click', e => {
+  const btn = e.target.closest('.ftag');
+  if (!btn) return;
+  document.querySelectorAll('.ftag').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cat = btn.dataset.cat;
+  filtered = cat === 'todos' ? [...allPrompts] : allPrompts.filter(p => p.cat === cat);
+  buildCarousel();
+});
+
+function openPrompt(i) {
+  const p = filtered[i];
+  curPromptText = p.text;
+  document.getElementById('mTitle').textContent = p.title;
+  document.getElementById('mText').textContent = p.text;
+  document.getElementById('btnCopy').textContent = 'Copiar prompt';
+  document.getElementById('btnCopy').classList.remove('copied');
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+function closeOv(e) { if (e.target.id === 'modal') closeModal(); }
+function copyP() {
+  navigator.clipboard.writeText(curPromptText).then(() => {
+    const b = document.getElementById('btnCopy');
+    b.textContent = '✓ Copiado!';
+    b.classList.add('copied');
+    setTimeout(() => { b.textContent = 'Copiar prompt'; b.classList.remove('copied'); }, 2500);
+  });
+}
+
+buildCarousel();
+</script>
+</body>
+</html>
